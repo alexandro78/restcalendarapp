@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CalendarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::get('calendar', [CalendarController::class, 'getCalendar']);
+Route::post('calendar', [CalendarController::class, 'createEntry']);
+Route::patch('calendar/{id}', [CalendarController::class, 'updateEntry']);
+Route::delete('calendar/{id}', [CalendarController::class, 'deleteEntry']);
+// Route::get('calendar/{id}', [CalendarController::class, 'getEntryById']);
