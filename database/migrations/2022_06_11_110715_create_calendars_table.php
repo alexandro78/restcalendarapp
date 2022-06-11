@@ -19,8 +19,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->date('date');
             $table->integer('duration');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
 
 
 

@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\DB;
 class CalendarController extends Controller
 {
 
-    public function getCalendar()
+    public function getCalendar(Request $request)
     {
-        $calendar = DB::table('calendars')->where('date', '<', '2022-06-01', 'AND', 'date', '>', '2022-05-01')->get();
-        // 'start_time', '<', '10:30'
+        $calendar = DB::table('calendars')
+            ->where('date', '>', $request->input('date_start'))
+            ->where('date', '<', $request->input('date_end'))
+            ->get();
         return response()->json($calendar, 200);
     }
 
@@ -28,8 +30,16 @@ class CalendarController extends Controller
         if (is_null($calendar)) {
             return response()->json(['error' => 'true', 'message' => 'Not found'], 404);
         }
-        $calendar->update($request->all());
-        return response()->json($calendar, 200);
+        date_default_timezone_set("Europe/Kiev");
+        $currentTime = strtotime(date('H:i:s'));
+        $taskStart = strtotime($calendar->start_time);
+        $mins = ($taskStart - $currentTime) / 60;
+        if (floor($mins) > 180) {
+            $calendar->update($request->all());
+            return response()->json($calendar, 200);
+        }
+        return response()->json(['error' => 'true', 'message' => 'time expired'], 404);
+
     }
 
     public function deleteEntry(Request $request, $id)
@@ -44,11 +54,11 @@ class CalendarController extends Controller
 
     // public function getEntryById($id)
     // {
-    //     $calendar = Calendar::find($id);
-    //     if (is_null($calendar)) {
-    //         return response()->json(['error' => 'true', 'message' => 'Not found'], 404);
-    //     }
-    //     return response()->json(Calendar::find($id), 200);
+    // $calendar = Calendar::find($id);
+    // if (is_null($calendar)) {
+    //     return response()->json(['error' => 'true', 'message' => 'Not found'], 404);
+    // }
+    //     return response()->json($calendar, 200);
     // }
 
 }

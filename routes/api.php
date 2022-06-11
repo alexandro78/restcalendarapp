@@ -20,8 +20,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
+
+
 Route::get('calendar', [CalendarController::class, 'getCalendar']);
 Route::post('calendar', [CalendarController::class, 'createEntry']);
 Route::patch('calendar/{id}', [CalendarController::class, 'updateEntry']);
 Route::delete('calendar/{id}', [CalendarController::class, 'deleteEntry']);
-// Route::get('calendar/{id}', [CalendarController::class, 'getEntryById']);
+Route::get('calendar/{id}', [CalendarController::class, 'getEntryById']);
