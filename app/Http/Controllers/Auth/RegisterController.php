@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use App\Modedls\User;
+use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Sapport\Facades\Hash;
-use Illuminate\Sapport\Facades\Validator;
-use Illuminate\Sapport\Str;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class RegisterController extends Controller
 {
@@ -26,6 +29,7 @@ class RegisterController extends Controller
                     'error' => $validator->errors()->all(),
                 ], 422);
             }
+            
             $request['password'] = Hash::make($request['password']);
             $request['remember_token'] = Str::random(10);
             $user = User::create($request->toArray());
