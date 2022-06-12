@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\DB;
 class CalendarController extends Controller
 {
 
+    private function timeToTask($id)
+    {
+        $calendar = Calendar::find($id);
+        date_default_timezone_set("Europe/Kiev");
+        $currentTime = strtotime(date('H:i:s'));
+        $taskStart = strtotime($calendar->start_time);
+        $mins = ($taskStart - $currentTime) / 60;
+        return (floor($mins) > 180);
+    }
+
     public function getCalendar(Request $request)
     {
         $calendar = DB::table('calendars')
@@ -30,11 +40,7 @@ class CalendarController extends Controller
         if (is_null($calendar)) {
             return response()->json(['error' => 'true', 'message' => 'Not found'], 404);
         }
-        date_default_timezone_set("Europe/Kiev");
-        $currentTime = strtotime(date('H:i:s'));
-        $taskStart = strtotime($calendar->start_time);
-        $mins = ($taskStart - $currentTime) / 60;
-        if (floor($mins) > 180) {
+        if ($this->timeToTask($id)) {
             $calendar->update($request->all());
             return response()->json($calendar, 200);
         }
@@ -48,9 +54,23 @@ class CalendarController extends Controller
         if (is_null($calendar)) {
             return response()->json(['error' => 'true', 'message' => 'Not found'], 404);
         }
-        $calendar->delete($request->all());
-        return response()->json('', 204);
+        if ($this->timeToTask($id)) {
+            $calendar->delete($request->all());
+            return response()->json('', 204);
+        }
+        return response()->json(['error' => 'true', 'message' => 'delete time expired'], 404);
+
     }
+
+    public function createToken(Request $request)
+    {
+        $token = $request->user()->createToken($request->remember_token);
+        return response()->json(['token' => $token->plainTextToken], 404);
+
+    }
+
+
+
 
     // public function getEntryById($id)
     // {
