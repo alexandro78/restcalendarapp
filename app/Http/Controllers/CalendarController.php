@@ -37,8 +37,6 @@ class CalendarController extends Controller
         }
             return response()->json('Для наложение времени войдите в account', 200);
         
-        // $calendar = Calendar::create($request->all());
-        // return response()->json($calendar, 201);
     }
 
     public function updateEntry(Request $request, $id)
@@ -75,39 +73,5 @@ class CalendarController extends Controller
         return response()->json(['token' => $token->plainTextToken], 404);
 
     }
-
-
-
-
-    // public function getEntryById($id)
-    // {
-    // $calendar = Calendar::find($id);
-    // if (is_null($calendar)) {
-    //     return response()->json(['error' => 'true', 'message' => 'Not found'], 404);
-    // }
-    //     return response()->json($calendar, 200);
-    // }
-
-    public function checkUser()
-    {
-
-        
-        if (Auth::guard('sanctum')->user()){
-            return response()->json(1, 200);
-        }
-        else {
-            return response()->json(10, 404);
-        }
-
-        if (Auth::guard('sanctum')->user() and ($request->start_time and $request->end_time)){
-            return response()->json('зареган и ввел поля start_time end_time', 200);
-        }
-        else {
-            return response()->json('незареган ввел start_time end_time', 404);
-        }
-
-     //current token: 3|BK1f44eLb54xjE8Ly6KakPjaIlgBmPD6rf4e3XME 
-    }
-
 
 }

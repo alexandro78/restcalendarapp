@@ -19,10 +19,6 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/logout', [UserController::class, 'logout'] )->name('logout.api');
     Route::get('/user', [UserController::class, 'userData'] )->name('user.api');
@@ -35,7 +31,3 @@ Route::post('/register', [RegisterController::class, 'register'] )->name('regist
 Route::post('/login', [LoginController::class, 'login'] )->name('login.api');
 
 Route::post('calendar', [CalendarController::class, 'createEntry']);
-Route::get('checktest', [CalendarController::class, 'checkUser']);
-
-// Route::get('calendar/{id}', [CalendarController::class, 'getEntryById']);
-// Route::post('/tokens/create', [CalendarController::class, 'createToken']);
