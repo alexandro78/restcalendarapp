@@ -35,6 +35,7 @@ Route::post('/register', [RegisterController::class, 'register'] )->name('regist
 Route::post('/login', [LoginController::class, 'login'] )->name('login.api');
 
 Route::post('calendar', [CalendarController::class, 'createEntry']);
+Route::get('checktest', [CalendarController::class, 'checkUser']);
 
 // Route::get('calendar/{id}', [CalendarController::class, 'getEntryById']);
 // Route::post('/tokens/create', [CalendarController::class, 'createToken']);
